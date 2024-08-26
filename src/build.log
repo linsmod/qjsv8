@@ -1,0 +1,346 @@
+gcc -g -Wall -MMD -MF .obj/MiniV8Api.o.d -Wno-array-bounds -Wno-format-truncation -D_GNU_SOURCE -DCONFIG_VERSION=\"2021-03-27\" -DCONFIG_BIGNUM -O2 -flto -std=c++11 -c -o .obj/MiniV8Api.o MiniV8Api.cpp	
+In file included from MiniV8Api.cpp:1:
+MiniV8Api.h:16:27: warning: backslash and newline separated by space
+   16 | #define DebugBreak() do { \
+      |                            
+MiniV8Api.h:17:74: warning: backslash and newline separated by space
+   17 |     fprintf(stderr, "DebugBreak called at %s:%d\n", __FILE__, __LINE__); \
+      |                                                                           
+MiniV8Api.h:18:40: warning: backslash and newline separated by space
+   18 |     fflush(stderr); /* 确保立即输出 */ \
+      |                                         
+MiniV8Api.h:19:58: warning: backslash and newline separated by space
+   19 |     /* 这里可以添加其他调试辅助代码，比如断言失败处理 */ \
+      |                                                           
+MiniV8Api.h:20:56: warning: backslash and newline separated by space
+   20 |     /* 注意：这里没有真正的“断点”触发，只是打印信息 */ \
+      |                                                         
+In file included from MiniV8Api.h:8,
+                 from MiniV8Api.cpp:1:
+quickjs.h: In function ‘int JS_IsString(JSValue)’:
+quickjs.h:675:16: warning: comparison of integer expressions of different signedness: ‘uint32_t’ {aka ‘unsigned int’} and ‘<unnamed enum>’ [-Wsign-compare]
+  675 |     return tag == JS_TAG_STRING;
+      |            ~~~~^~~~~~~~~~~~~~~~
+In file included from MiniV8Api.cpp:1:
+MiniV8Api.h: At global scope:
+MiniV8Api.h:13:16: error: variable or field ‘__cdecl’ declared void
+   13 | #define V8CALL __cdecl
+      |                ^~~~~~~
+MiniV8Api.h:475:17: note: in expansion of macro ‘V8CALL’
+  475 |     static void V8CALL functionTemplateCall(const v8::FunctionCallbackInfo<v8::Value>& info);
+      |                 ^~~~~~
+MiniV8Api.h:13:16: error: expected ‘;’ at end of member declaration
+   13 | #define V8CALL __cdecl
+      |                ^~~~~~~
+MiniV8Api.h:475:17: note: in expansion of macro ‘V8CALL’
+  475 |     static void V8CALL functionTemplateCall(const v8::FunctionCallbackInfo<v8::Value>& info);
+      |                 ^~~~~~
+MiniV8Api.h:475:24: error: ISO C++ forbids declaration of ‘functionTemplateCall’ with no type [-fpermissive]
+  475 |     static void V8CALL functionTemplateCall(const v8::FunctionCallbackInfo<v8::Value>& info);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+MiniV8Api.cpp:162:6: error: ‘bool v8::Isolate::AddMessageListener’ is not a static data member of ‘class v8::Isolate’
+  162 | bool v8::Isolate::AddMessageListener(void(__cdecl *)(v8::Local<v8::Message>,
+      |      ^~
+MiniV8Api.cpp:162:43: error: ‘__cdecl’ was not declared in this scope
+  162 | bool v8::Isolate::AddMessageListener(void(__cdecl *)(v8::Local<v8::Message>,
+      |                                           ^~~~~~~
+MiniV8Api.cpp:162:38: error: expected primary-expression before ‘void’
+  162 | bool v8::Isolate::AddMessageListener(void(__cdecl *)(v8::Local<v8::Message>,
+      |                                      ^~~~
+MiniV8Api.cpp:164:58: error: expected primary-expression before ‘)’ token
+  164 |                                      v8::Local<v8::Value>) {
+      |                                                          ^
+MiniV8Api.cpp:164:58: error: expression list treated as compound expression in initializer [-fpermissive]
+MiniV8Api.cpp: In function ‘JSValue miniv8::wrapGetter(JSContext*, JSValue, void*)’:
+MiniV8Api.cpp:355:14: warning: unused variable ‘runtime’ [-Wunused-variable]
+  355 |   JSRuntime *runtime = JS_GetRuntime(ctx);
+      |              ^~~~~~~
+MiniV8Api.cpp: At global scope:
+MiniV8Api.cpp:454:17: error: expected ‘)’ before ‘*’ token
+  454 |     void(__cdecl *)(v8::Local<v8::Name>,
+      |         ~       ^~
+      |                 )
+MiniV8Api.cpp:454:17: error: expected ‘)’ before ‘*’ token
+  454 |     void(__cdecl *)(v8::Local<v8::Name>,
+      |                 ^~
+      |                 )
+MiniV8Api.cpp:452:29: note: to match this ‘(’
+  452 | bool v8::Object::SetAccessor(
+      |                             ^
+MiniV8Api.cpp:454:18: error: expected initializer before ‘*’ token
+  454 |     void(__cdecl *)(v8::Local<v8::Name>,
+      |                  ^
+MiniV8Api.cpp: In member function ‘bool v8::Object::SetAccessor(v8::Local<v8::String>, v8::AccessorGetterCallback, v8::AccessorSetterCallback, v8::Local<v8::Value>, v8::AccessControl, v8::PropertyAttribute)’:
+MiniV8Api.cpp:510:28: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+  510 |   prop.u.getset.userdata = (void *)(hashVal);
+      |                            ^~~~~~~~~~~~~~~~~
+MiniV8Api.cpp: In member function ‘v8::Maybe<bool> v8::Object::SetPrototype(v8::Local<v8::Context>, v8::Local<v8::Value>)’:
+MiniV8Api.cpp:940:11: warning: unused variable ‘b’ [-Wunused-variable]
+  940 |   JS_BOOL b = JS_IsUndefined(protoV);
+      |           ^
+MiniV8Api.cpp: In member function ‘bool v8::String::ContainsOnlyOneByte() const’:
+MiniV8Api.cpp:1120:21: warning: unused variable ‘self’ [-Wunused-variable]
+ 1120 |   miniv8::V8String *self =
+      |                     ^~~~
+MiniV8Api.cpp: In member function ‘int v8::String::Length() const’:
+MiniV8Api.cpp:1188:10: warning: unused variable ‘len’ [-Wunused-variable]
+ 1188 |   size_t len = 0;
+      |          ^~~
+MiniV8Api.cpp: In member function ‘int v8::String::WriteOneByte(uint8_t*, int, int, int) const’:
+MiniV8Api.cpp:1227:10: warning: unused variable ‘len’ [-Wunused-variable]
+ 1227 |   size_t len = 0;
+      |          ^~~
+MiniV8Api.cpp: In static member function ‘static v8::MaybeLocal<v8::String> v8::String::NewFromUtf8(v8::Isolate*, const char*, v8::NewStringType, int)’:
+MiniV8Api.cpp:1274:22: warning: unused variable ‘iso’ [-Wunused-variable]
+ 1274 |   miniv8::V8Isolate *iso = (miniv8::V8Isolate *)isolate;
+      |                      ^~~
+MiniV8Api.cpp: In member function ‘bool v8::Value::IsDataView() const’:
+MiniV8Api.cpp:1469:20: warning: unused variable ‘self’ [-Wunused-variable]
+ 1469 |   miniv8::V8Value *self =
+      |                    ^~~~
+MiniV8Api.cpp: At global scope:
+MiniV8Api.cpp:1865:35: error: expected ‘)’ before ‘*’ token
+ 1865 |                       void(__cdecl *)(v8::WeakCallbackInfo<void> const &),
+      |                           ~       ^~
+      |                                   )
+MiniV8Api.cpp:1865:35: error: expected ‘)’ before ‘*’ token
+ 1865 |                       void(__cdecl *)(v8::WeakCallbackInfo<void> const &),
+      |                                   ^~
+      |                                   )
+MiniV8Api.cpp:1864:22: note: to match this ‘(’
+ 1864 | void v8::V8::MakeWeak(v8::internal::Object **, void *,
+      |                      ^
+MiniV8Api.cpp:1865:36: error: expected initializer before ‘*’ token
+ 1865 |                       void(__cdecl *)(v8::WeakCallbackInfo<void> const &),
+      |                                    ^
+MiniV8Api.cpp: In static member function ‘static v8::Local<v8::External> v8::External::New(v8::Isolate*, void*)’:
+MiniV8Api.cpp:2291:22: warning: unused variable ‘isolate’ [-Wunused-variable]
+ 2291 |   miniv8::V8Isolate *isolate = (miniv8::V8Isolate *)v8isolate;
+      |                      ^~~~~~~
+MiniV8Api.cpp: At global scope:
+MiniV8Api.cpp:2466:17: error: expected ‘)’ before ‘*’ token
+ 2466 |     void(__cdecl *)(v8::Local<v8::Name>,
+      |         ~       ^~
+      |                 )
+MiniV8Api.cpp:2466:17: error: expected ‘)’ before ‘*’ token
+ 2466 |     void(__cdecl *)(v8::Local<v8::Name>,
+      |                 ^~
+      |                 )
+MiniV8Api.cpp:2464:41: note: to match this ‘(’
+ 2464 | void v8::Template::SetNativeDataProperty(
+      |                                         ^
+MiniV8Api.cpp:2466:18: error: expected initializer before ‘*’ token
+ 2466 |     void(__cdecl *)(v8::Local<v8::Name>,
+      |                  ^
+MiniV8Api.cpp: In member function ‘void v8::Template::Set(v8::Local<v8::Name>, v8::Local<v8::Data>, v8::PropertyAttribute)’:
+MiniV8Api.cpp:2607:24: warning: unused variable ‘ctx’ [-Wunused-variable]
+ 2607 |     miniv8::V8Context *ctx =
+      |                        ^~~
+MiniV8Api.cpp: In member function ‘v8::MaybeLocal<v8::Function> v8::FunctionTemplate::GetFunction(v8::Local<v8::Context>)’:
+MiniV8Api.cpp:2704:67: error: no matching function for call to ‘miniv8::V8Function::V8Function(miniv8::V8Context*&, int (miniv8::V8FunctionTemplate::*)(const v8::FunctionCallbackInfo<v8::Value>&), miniv8::V8FunctionTemplate*&)’
+ 2704 |       ctx, &miniv8::V8FunctionTemplate::functionTemplateCall, self);
+      |                                                                   ^
+In file included from MiniV8Api.cpp:1:
+MiniV8Api.h:347:5: note: candidate: ‘miniv8::V8Function::V8Function(miniv8::V8Context*, v8::FunctionCallback, void*)’
+  347 |     V8Function(V8Context* ctx, v8::FunctionCallback callback, void* data)
+      |     ^~~~~~~~~~
+MiniV8Api.h:347:53: note:   no known conversion for argument 2 from ‘int (miniv8::V8FunctionTemplate::*)(const v8::FunctionCallbackInfo<v8::Value>&)’ to ‘v8::FunctionCallback’ {aka ‘void (*)(const v8::FunctionCallbackInfo<v8::Value>&)’}
+  347 |     V8Function(V8Context* ctx, v8::FunctionCallback callback, void* data)
+      |                                ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+MiniV8Api.h:345:7: note: candidate: ‘miniv8::V8Function::V8Function(const miniv8::V8Function&)’
+  345 | class V8Function : public V8Object {
+      |       ^~~~~~~~~~
+MiniV8Api.h:345:7: note:   candidate expects 1 argument, 3 provided
+MiniV8Api.h:345:7: note: candidate: ‘miniv8::V8Function::V8Function(miniv8::V8Function&&)’
+MiniV8Api.h:345:7: note:   candidate expects 1 argument, 3 provided
+MiniV8Api.cpp: At global scope:
+MiniV8Api.cpp:2804:6: error: variable or field ‘SetAccessCheckCallback’ declared void
+ 2804 | void v8::ObjectTemplate::SetAccessCheckCallback(
+      |      ^~
+MiniV8Api.cpp:2805:10: error: ‘__cdecl’ was not declared in this scope
+ 2805 |     bool(__cdecl *)(v8::Local<v8::Context>, v8::Local<v8::Object>,
+      |          ^~~~~~~
+MiniV8Api.cpp:2805:5: error: expected primary-expression before ‘bool’
+ 2805 |     bool(__cdecl *)(v8::Local<v8::Context>, v8::Local<v8::Object>,
+      |     ^~~~
+MiniV8Api.cpp:2807:25: error: expected primary-expression before ‘)’ token
+ 2807 |     v8::Local<v8::Value>) {
+      |                         ^
+MiniV8Api.cpp: In member function ‘void v8::ObjectTemplate::SetAccessor(v8::Local<v8::Name>, v8::AccessorNameGetterCallback, v8::AccessorNameSetterCallback, v8::Local<v8::Value>, v8::AccessControl, v8::PropertyAttribute, v8::Local<v8::AccessorSignature>)’:
+MiniV8Api.cpp:2821:10: warning: unused variable ‘len’ [-Wunused-variable]
+ 2821 |   size_t len = 0;
+      |          ^~~
+MiniV8Api.cpp: In member function ‘void v8::ObjectTemplate::SetAccessor(v8::Local<v8::String>, v8::AccessorGetterCallback, v8::AccessorSetterCallback, v8::Local<v8::Value>, v8::AccessControl, v8::PropertyAttribute, v8::Local<v8::AccessorSignature>)’:
+MiniV8Api.cpp:2851:10: warning: unused variable ‘len’ [-Wunused-variable]
+ 2851 |   size_t len = 0;
+      |          ^~~
+MiniV8Api.cpp: At global scope:
+MiniV8Api.cpp:3784:29: error: expected ‘,’ or ‘...’ before ‘(’ token
+ 3784 |     v8::RetainedObjectInfo *(__cdecl *)(unsigned short, v8::Local<v8::Value>)) {
+      |                             ^
+MiniV8Api.cpp:3782:6: error: no declaration matches ‘void v8::HeapProfiler::SetWrapperClassInfoProvider(short unsigned int, v8::RetainedObjectInfo*)’
+ 3782 | void v8::HeapProfiler::SetWrapperClassInfoProvider(
+      |      ^~
+In file included from MiniV8Api.h:4,
+                 from MiniV8Api.cpp:1:
+../v8_5_7/include/v8-profiler.h:785:8: note: candidate is: ‘void v8::HeapProfiler::SetWrapperClassInfoProvider(uint16_t, v8::HeapProfiler::WrapperInfoCallback)’
+  785 |   void SetWrapperClassInfoProvider(
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+../v8_5_7/include/v8-profiler.h:630:17: note: ‘class v8::HeapProfiler’ defined here
+  630 | class V8_EXPORT HeapProfiler {
+      |                 ^~~~~~~~~~~~
+MiniV8Api.cpp:3799:6: error: variable or field ‘AddCallCompletedCallback’ declared void
+ 3799 | void v8::Isolate::AddCallCompletedCallback(void(__cdecl *)(void)) {
+      |      ^~
+MiniV8Api.cpp:3799:49: error: ‘__cdecl’ was not declared in this scope
+ 3799 | void v8::Isolate::AddCallCompletedCallback(void(__cdecl *)(void)) {
+      |                                                 ^~~~~~~
+MiniV8Api.cpp:3799:44: error: expected primary-expression before ‘void’
+ 3799 | void v8::Isolate::AddCallCompletedCallback(void(__cdecl *)(void)) {
+      |                                            ^~~~
+MiniV8Api.cpp:3807:6: error: variable or field ‘EnqueueMicrotask’ declared void
+ 3807 | void v8::Isolate::EnqueueMicrotask(void(__cdecl *)(void *), void *) {
+      |      ^~
+MiniV8Api.cpp:3807:41: error: ‘__cdecl’ was not declared in this scope
+ 3807 | void v8::Isolate::EnqueueMicrotask(void(__cdecl *)(void *), void *) {
+      |                                         ^~~~~~~
+MiniV8Api.cpp:3807:36: error: expected primary-expression before ‘void’
+ 3807 | void v8::Isolate::EnqueueMicrotask(void(__cdecl *)(void *), void *) {
+      |                                    ^~~~
+MiniV8Api.cpp:3807:61: error: expected primary-expression before ‘void’
+ 3807 | void v8::Isolate::EnqueueMicrotask(void(__cdecl *)(void *), void *) {
+      |                                                             ^~~~
+MiniV8Api.cpp:3821:6: error: variable or field ‘RemoveCallCompletedCallback’ declared void
+ 3821 | void v8::Isolate::RemoveCallCompletedCallback(void(__cdecl *)(void)) {
+      |      ^~
+MiniV8Api.cpp:3821:52: error: ‘__cdecl’ was not declared in this scope
+ 3821 | void v8::Isolate::RemoveCallCompletedCallback(void(__cdecl *)(void)) {
+      |                                                    ^~~~~~~
+MiniV8Api.cpp:3821:47: error: expected primary-expression before ‘void’
+ 3821 | void v8::Isolate::RemoveCallCompletedCallback(void(__cdecl *)(void)) {
+      |                                               ^~~~
+MiniV8Api.cpp:3825:6: error: variable or field ‘RequestInterrupt’ declared void
+ 3825 | void v8::Isolate::RequestInterrupt(void(__cdecl *)(v8::Isolate *, void *),
+      |      ^~
+MiniV8Api.cpp:3825:41: error: ‘__cdecl’ was not declared in this scope
+ 3825 | void v8::Isolate::RequestInterrupt(void(__cdecl *)(v8::Isolate *, void *),
+      |                                         ^~~~~~~
+MiniV8Api.cpp:3825:36: error: expected primary-expression before ‘void’
+ 3825 | void v8::Isolate::RequestInterrupt(void(__cdecl *)(v8::Isolate *, void *),
+      |                                    ^~~~
+MiniV8Api.cpp:3826:36: error: expected primary-expression before ‘void’
+ 3826 |                                    void *) {
+      |                                    ^~~~
+MiniV8Api.cpp:3846:6: error: variable or field ‘SetEventLogger’ declared void
+ 3846 | void v8::Isolate::SetEventLogger(void(__cdecl *)(char const *, int)) {
+      |      ^~
+MiniV8Api.cpp:3846:39: error: ‘__cdecl’ was not declared in this scope
+ 3846 | void v8::Isolate::SetEventLogger(void(__cdecl *)(char const *, int)) {
+      |                                       ^~~~~~~
+MiniV8Api.cpp:3846:34: error: expected primary-expression before ‘void’
+ 3846 | void v8::Isolate::SetEventLogger(void(__cdecl *)(char const *, int)) {
+      |                                  ^~~~
+MiniV8Api.cpp:3850:6: error: variable or field ‘SetFailedAccessCheckCallbackFunction’ declared void
+ 3850 | void v8::Isolate::SetFailedAccessCheckCallbackFunction(void(__cdecl *)(
+      |      ^~
+MiniV8Api.cpp:3850:61: error: ‘__cdecl’ was not declared in this scope
+ 3850 | void v8::Isolate::SetFailedAccessCheckCallbackFunction(void(__cdecl *)(
+      |                                                             ^~~~~~~
+MiniV8Api.cpp:3850:56: error: expected primary-expression before ‘void’
+ 3850 | void v8::Isolate::SetFailedAccessCheckCallbackFunction(void(__cdecl *)(
+      |                                                        ^~~~
+MiniV8Api.cpp:3855:6: error: variable or field ‘SetFatalErrorHandler’ declared void
+ 3855 | void v8::Isolate::SetFatalErrorHandler(void(__cdecl *)(char const *,
+      |      ^~
+MiniV8Api.cpp:3855:45: error: ‘__cdecl’ was not declared in this scope
+ 3855 | void v8::Isolate::SetFatalErrorHandler(void(__cdecl *)(char const *,
+      |                                             ^~~~~~~
+MiniV8Api.cpp:3855:40: error: expected primary-expression before ‘void’
+ 3855 | void v8::Isolate::SetFatalErrorHandler(void(__cdecl *)(char const *,
+      |                                        ^~~~
+MiniV8Api.cpp:3866:6: error: variable or field ‘SetPromiseRejectCallback’ declared void
+ 3866 | void v8::Isolate::SetPromiseRejectCallback(
+      |      ^~
+MiniV8Api.cpp:3867:10: error: ‘__cdecl’ was not declared in this scope
+ 3867 |     void(__cdecl *)(v8::PromiseRejectMessage)) {
+      |          ^~~~~~~
+MiniV8Api.cpp:3867:5: error: expected primary-expression before ‘void’
+ 3867 |     void(__cdecl *)(v8::PromiseRejectMessage)) {
+      |     ^~~~
+MiniV8Api.cpp:3873:6: error: variable or field ‘SetUseCounterCallback’ declared void
+ 3873 | void v8::Isolate::SetUseCounterCallback(
+      |      ^~
+MiniV8Api.cpp:3874:10: error: ‘__cdecl’ was not declared in this scope
+ 3874 |     void(__cdecl *)(v8::Isolate *, v8::Isolate::UseCounterFeature)) {
+      |          ^~~~~~~
+MiniV8Api.cpp:3874:5: error: expected primary-expression before ‘void’
+ 3874 |     void(__cdecl *)(v8::Isolate *, v8::Isolate::UseCounterFeature)) {
+      |     ^~~~
+MiniV8Api.cpp:3902:6: error: variable or field ‘AddGCEpilogueCallback’ declared void
+ 3902 | void v8::V8::AddGCEpilogueCallback(void(__cdecl *)(v8::GCType,
+      |      ^~
+MiniV8Api.cpp:3902:41: error: ‘__cdecl’ was not declared in this scope
+ 3902 | void v8::V8::AddGCEpilogueCallback(void(__cdecl *)(v8::GCType,
+      |                                         ^~~~~~~
+MiniV8Api.cpp:3902:36: error: expected primary-expression before ‘void’
+ 3902 | void v8::V8::AddGCEpilogueCallback(void(__cdecl *)(v8::GCType,
+      |                                    ^~~~
+MiniV8Api.cpp:3904:46: error: expected primary-expression before ‘)’ token
+ 3904 |                                    v8::GCType) {
+      |                                              ^
+MiniV8Api.cpp:3908:6: error: variable or field ‘AddGCPrologueCallback’ declared void
+ 3908 | void v8::V8::AddGCPrologueCallback(void(__cdecl *)(v8::GCType,
+      |      ^~
+MiniV8Api.cpp:3908:41: error: ‘__cdecl’ was not declared in this scope
+ 3908 | void v8::V8::AddGCPrologueCallback(void(__cdecl *)(v8::GCType,
+      |                                         ^~~~~~~
+MiniV8Api.cpp:3908:36: error: expected primary-expression before ‘void’
+ 3908 | void v8::V8::AddGCPrologueCallback(void(__cdecl *)(v8::GCType,
+      |                                    ^~~~
+MiniV8Api.cpp:3910:46: error: expected primary-expression before ‘)’ token
+ 3910 |                                    v8::GCType) {
+      |                                              ^
+MiniV8Api.cpp:3931:6: error: variable or field ‘SetEntropySource’ declared void
+ 3931 | void v8::V8::SetEntropySource(bool(__cdecl *)(unsigned char *, size_t)) {
+      |      ^~
+MiniV8Api.cpp:3931:36: error: ‘__cdecl’ was not declared in this scope
+ 3931 | void v8::V8::SetEntropySource(bool(__cdecl *)(unsigned char *, size_t)) {
+      |                                    ^~~~~~~
+MiniV8Api.cpp:3931:31: error: expected primary-expression before ‘bool’
+ 3931 | void v8::V8::SetEntropySource(bool(__cdecl *)(unsigned char *, size_t)) {
+      |                               ^~~~
+MiniV8Api.cpp:3997:47: error: expected ‘)’ before ‘*’ token
+ 3997 |                                   void(__cdecl *)(v8::Debug::Message const &)) {
+      |                                       ~       ^~
+      |                                               )
+MiniV8Api.cpp:3997:47: error: expected ‘)’ before ‘*’ token
+ 3997 |                                   void(__cdecl *)(v8::Debug::Message const &)) {
+      |                                               ^~
+      |                                               )
+MiniV8Api.cpp:3996:34: note: to match this ‘(’
+ 3996 | void v8::Debug::SetMessageHandler(v8::Isolate *,
+      |                                  ^
+MiniV8Api.cpp:3997:48: error: expected initializer before ‘*’ token
+ 3997 |                                   void(__cdecl *)(v8::Debug::Message const &)) {
+      |                                                ^
+MiniV8Api.cpp:4006:32: error: expected ‘)’ before ‘*’ token
+ 4006 |     v8::Isolate *, void(__cdecl *)(v8::Debug::EventDetails const &),
+      |                        ~       ^~
+      |                                )
+MiniV8Api.cpp:4006:32: error: expected ‘)’ before ‘*’ token
+ 4006 |     v8::Isolate *, void(__cdecl *)(v8::Debug::EventDetails const &),
+      |                                ^~
+      |                                )
+MiniV8Api.cpp:4005:38: note: to match this ‘(’
+ 4005 | bool v8::Debug::SetDebugEventListener(
+      |                                      ^
+MiniV8Api.cpp:4006:33: error: expected initializer before ‘*’ token
+ 4006 |     v8::Isolate *, void(__cdecl *)(v8::Debug::EventDetails const &),
+      |                                 ^
+MiniV8Api.cpp: In member function ‘bool v8::Value::IsNull() const’:
+MiniV8Api.cpp:4227:12: error: no match for ‘operator==’ (operand types are ‘JSValue’ and ‘JSValue’)
+ 4227 |   return v == JS_NULL;
+      |          ~ ^~
+      |          |
+      |          JSValue
+make: *** [Makefile:270: .obj/MiniV8Api.o] Error 1
