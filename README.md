@@ -3,9 +3,9 @@
 
 This project is intent to implement v8 api with qjs(quickjs)
 
-初始代码提取自MiniV8, 从 miniblink：https://github.com/weolar/miniblink49.
+初始代码提取自MiniV8, 从 [miniblink：https://github.com/weolar/miniblink49.](https://github.com/weolar/miniblink49/tree/master/quickjs/miniv8)
 
-Project initial codes is coming from MiniV8 of miniblink：https://github.com/weolar/miniblink49.
+Project initial codes is coming from MiniV8 of miniblink：[https://github.com/weolar/miniblink49.](https://github.com/weolar/miniblink49/tree/master/quickjs/miniv8)
 
 ## 注意
 这只是一个实验性项目，它只是为了展示一种可能性而实现了v8的一小部分Api。
