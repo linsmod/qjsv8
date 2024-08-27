@@ -1,7 +1,11 @@
-# qjsv8
+# QJSV8 (keywords: miniv8, mini-v8, v8-mini,v8-lite, qjs-backend-v8, quickjs-backend-v8)
 本项目旨在使用quickjs实现v8.h的公共接口。
 
-初始代码提取自 miniblink：https://github.com/weolar/miniblink49.
+This project is intent to implement v8 api with qjs(quickjs)
+
+初始代码提取自MiniV8, 从 miniblink：https://github.com/weolar/miniblink49.
+
+Project initial codes is coming from MiniV8 of miniblink：https://github.com/weolar/miniblink49.
 
 ## 注意
 这只是一个实验性项目，它只是为了展示一种可能性而实现了v8的一小部分Api。
