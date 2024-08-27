@@ -5,9 +5,9 @@
 #ifndef V8_LIBPLATFORM_LIBPLATFORM_H_
 #define V8_LIBPLATFORM_LIBPLATFORM_H_
 
-#include "libplatform/libplatform-export.h"
-#include "libplatform/v8-tracing.h"
-#include "v8-platform.h"  // NOLINT(build/include)
+#include "libplatform-export.h"
+#include "v8-tracing.h"
+#include "../v8-platform.h"  // NOLINT(build/include)
 
 namespace v8 {
 namespace platform {

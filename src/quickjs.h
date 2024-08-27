@@ -44,6 +44,19 @@ extern "C" {
 #define __js_printf_like(a, b)
 #endif
 
+
+
+#ifdef DEBUG  
+#define DebugBreak() do { \
+    fprintf(stderr, "DebugBreak called at %s:%d\n", __FILE__, __LINE__); \
+    fflush(stderr); /* 确保立即输出 */ \
+} while (0)  
+#else  
+#define DebugBreak() do { \
+    \
+} while (0)  
+#endif
+
 #define JS_BOOL int
 
 typedef struct JSRuntime JSRuntime;
@@ -223,23 +236,23 @@ typedef struct JSValue {
 #define JS_VALUE_GET_FLOAT64(v) ((v).u.float64)
 #define JS_VALUE_GET_PTR(v) ((v).u.ptr)
 
-// #define JS_MKVAL(tag, val) (JSValue){ (JSValueUnion){ .int32 = val }, tag }
-// #define JS_MKPTR(tag, p) (JSValue){ (JSValueUnion){ .ptr = p }, tag }
-inline JSValue JS_MKVAL(int64_t tag, int32_t val)
-{
-    JSValue v;
-    v.u.int32 = val;
-    v.tag = tag;
-    return v;
-}
+#define JS_MKVAL(tag, val) (JSValue){ (JSValueUnion){ .int32 = val }, tag }
+#define JS_MKPTR(tag, p) (JSValue){ (JSValueUnion){ .ptr = p }, tag }
+// inline JSValue JS_MKVAL(int64_t tag, int32_t val)
+// {
+//     JSValue v;
+//     v.u.int32 = val;
+//     v.tag = tag;
+//     return v;
+// }
 
-inline JSValue JS_MKPTR(int64_t tag, void* p)
-{
-    JSValue v;
-    v.u.ptr = p;
-    v.tag = tag;
-    return v;
-}
+// inline JSValue JS_MKPTR(int64_t tag, void* p)
+// {
+//     JSValue v;
+//     v.u.ptr = p;
+//     v.tag = tag;
+//     return v;
+// }
 
 inline JS_BOOL JS_VALUE_IS_EQ(JSValue a, JSValue b)
 {

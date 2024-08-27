@@ -148,6 +148,7 @@ class Arguments;
 class Heap;
 class HeapObject;
 class Isolate;
+class QjsImpl;
 class Object;
 struct StreamedSource;
 template<typename T> class CustomArguments;
@@ -1184,7 +1185,7 @@ class V8_EXPORT ScriptCompiler {
     // caller. The CachedData object is alive as long as the Source object is
     // alive.
     V8_INLINE const CachedData* GetCachedData() const;
-
+    V8_INLINE const ScriptOrigin* GetScriptOrigin() const;
     // Prevent copying.
     Source(const Source&) = delete;
     Source& operator=(const Source&) = delete;
@@ -1200,6 +1201,7 @@ class V8_EXPORT ScriptCompiler {
     Local<Integer> resource_column_offset;
     ScriptOriginOptions resource_options;
     Local<Value> source_map_url;
+    const ScriptOrigin* script_origin;
 
     // Cached data from previous compilation (if a kConsume*Cache flag is
     // set), or hold newly generated cache data (kProduce*Cache flags) are
@@ -1430,7 +1432,6 @@ class V8_EXPORT ScriptCompiler {
       Isolate* isolate, Source* source, CompileOptions options, bool is_module);
 };
 
-
 /**
  * An error message.
  */
@@ -1442,6 +1443,7 @@ class V8_EXPORT Message {
   V8_WARN_UNUSED_RESULT MaybeLocal<String> GetSourceLine(
       Local<Context> context) const;
 
+  Message();
   /**
    * Returns the origin for the script from where the function causing the
    * error originates.
@@ -1511,6 +1513,8 @@ class V8_EXPORT Message {
   static const int kNoLineNumberInfo = 0;
   static const int kNoColumnInfo = 0;
   static const int kNoScriptIdInfo = 0;
+  private:
+  v8::internal::QjsImpl* qjs_impl_;
 };
 
 
@@ -1902,13 +1906,15 @@ class V8_EXPORT Value : public Data {
    * Returns true if this value is the undefined value.  See ECMA-262
    * 4.3.10.
    */
-  V8_INLINE bool IsUndefined() const;
+  bool IsUndefined() const;
+
+  bool IsException() const;
 
   /**
    * Returns true if this value is the null value.  See ECMA-262
    * 4.3.11.
    */
-  V8_INLINE bool IsNull() const;
+  bool IsNull() const;
 
    /**
    * Returns true if this value is true.
@@ -1929,7 +1935,7 @@ class V8_EXPORT Value : public Data {
    * Returns true if this value is an instance of the String type.
    * See ECMA-262 8.4.
    */
-  V8_INLINE bool IsString() const;
+  bool IsString() const;
 
   /**
    * Returns true if this value is a symbol.
@@ -2229,7 +2235,17 @@ class V8_EXPORT Value : public Data {
   template <class T> V8_INLINE static Value* Cast(T* value);
 
   Local<String> TypeOf(v8::Isolate*);
-
+  void SetQjsImpl(void* qjs_impl,const char* qjs_impl_info){
+    this->qjs_impl_=reinterpret_cast<internal::QjsImpl*>( qjs_impl);
+    this->qjs_impl_info = qjs_impl_info;
+  }
+  void SetQjsImpl(internal::QjsImpl* qjs_impl){
+    this->qjs_impl_=qjs_impl;
+  }
+  template<typename T>
+  T* getQjsImpl() const{
+    return (T*)(qjs_impl_);
+  }
  private:
   V8_INLINE bool QuickIsUndefined() const;
   V8_INLINE bool QuickIsNull() const;
@@ -2237,6 +2253,8 @@ class V8_EXPORT Value : public Data {
   bool FullIsUndefined() const;
   bool FullIsNull() const;
   bool FullIsString() const;
+  internal::QjsImpl* qjs_impl_;
+  const char* qjs_impl_info;
 };
 
 
@@ -2290,7 +2308,6 @@ enum class NewStringType { kNormal, kInternalized };
 class V8_EXPORT String : public Name {
  public:
   static const int kMaxLength = (1 << 28) - 16;
-
   enum Encoding {
     UNKNOWN_ENCODING = 0x1,
     TWO_BYTE_ENCODING = 0x0,
@@ -2612,8 +2629,8 @@ class V8_EXPORT String : public Name {
    */
   class V8_EXPORT Utf8Value {
    public:
-    explicit Utf8Value(Local<v8::Value> obj);
-    explicit Utf8Value(Isolate *isolate, Local<v8::Value> obj) :Utf8Value(obj) {};
+    Utf8Value(Local<v8::Value> obj);
+    Utf8Value(Isolate *isolate, Local<v8::Value> obj);
     ~Utf8Value();
     char* operator*() { return str_; }
     const char* operator*() const { return str_; }
@@ -7733,6 +7750,8 @@ class V8_EXPORT TryCatch {
    * location itself is compared against JavaScript try/catch blocks.
    */
   TryCatch(Isolate* isolate);
+  
+  
 
   /**
    * Unregisters and deletes this try/catch block.
@@ -7785,11 +7804,15 @@ class V8_EXPORT TryCatch {
    */
   Local<Value> Exception() const;
 
+
+  void setException(void* ex,void* message_obj);
+
+  void setNext(TryCatch* next);
+
   /**
    * Returns the .stack property of the thrown object.  If no .stack
    * property is present an empty handle is returned.
    */
-  V8_DEPRECATE_SOON("Use maybe version.", Local<Value> StackTrace() const);
   V8_WARN_UNUSED_RESULT MaybeLocal<Value> StackTrace(
       Local<Context> context) const;
 
@@ -7855,9 +7878,10 @@ class V8_EXPORT TryCatch {
  private:
   void ResetInternal();
 
-  v8::internal::Isolate* isolate_;
+  v8::internal::Isolate* isolate_ = nullptr;
+  v8::internal::QjsImpl* qjs_impl_ = nullptr;
   v8::TryCatch* next_;
-  void* exception_;
+  void* exception_ = nullptr;
   void* message_obj_;
   void* js_stack_comparable_address_;
   bool is_verbose_ : 1;
@@ -8924,6 +8948,7 @@ Local<Value> ScriptOrigin::SourceMapUrl() const { return source_map_url_; }
 ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
                                CachedData* data)
     : source_string(string),
+      script_origin(&origin),
       resource_name(origin.ResourceName()),
       resource_line_offset(origin.ResourceLineOffset()),
       resource_column_offset(origin.ResourceColumnOffset()),
@@ -8934,7 +8959,7 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
 
 ScriptCompiler::Source::Source(Local<String> string,
                                CachedData* data)
-    : source_string(string), cached_data(data) {}
+    : source_string(string),script_origin(nullptr), cached_data(data) {}
 
 
 ScriptCompiler::Source::~Source() {
@@ -8945,6 +8970,11 @@ ScriptCompiler::Source::~Source() {
 const ScriptCompiler::CachedData* ScriptCompiler::Source::GetCachedData()
     const {
   return cached_data;
+}
+
+const ScriptOrigin* ScriptCompiler::Source::GetScriptOrigin()
+    const {
+  return script_origin;
 }
 
 

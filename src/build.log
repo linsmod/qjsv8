@@ -51,7 +51,7 @@ MiniV8Api.cpp:164:58: error: expected primary-expression before ‘)’ token
   164 |                                      v8::Local<v8::Value>) {
       |                                                          ^
 MiniV8Api.cpp:164:58: error: expression list treated as compound expression in initializer [-fpermissive]
-MiniV8Api.cpp: In function ‘JSValue miniv8::wrapGetter(JSContext*, JSValue, void*)’:
+MiniV8Api.cpp: In function ‘JSValue qjsv8::wrapGetter(JSContext*, JSValue, void*)’:
 MiniV8Api.cpp:355:14: warning: unused variable ‘runtime’ [-Wunused-variable]
   355 |   JSRuntime *runtime = JS_GetRuntime(ctx);
       |              ^~~~~~~
@@ -80,7 +80,7 @@ MiniV8Api.cpp:940:11: warning: unused variable ‘b’ [-Wunused-variable]
       |           ^
 MiniV8Api.cpp: In member function ‘bool v8::String::ContainsOnlyOneByte() const’:
 MiniV8Api.cpp:1120:21: warning: unused variable ‘self’ [-Wunused-variable]
- 1120 |   miniv8::V8String *self =
+ 1120 |   qjsv8::V8String *self =
       |                     ^~~~
 MiniV8Api.cpp: In member function ‘int v8::String::Length() const’:
 MiniV8Api.cpp:1188:10: warning: unused variable ‘len’ [-Wunused-variable]
@@ -92,11 +92,11 @@ MiniV8Api.cpp:1227:10: warning: unused variable ‘len’ [-Wunused-variable]
       |          ^~~
 MiniV8Api.cpp: In static member function ‘static v8::MaybeLocal<v8::String> v8::String::NewFromUtf8(v8::Isolate*, const char*, v8::NewStringType, int)’:
 MiniV8Api.cpp:1274:22: warning: unused variable ‘iso’ [-Wunused-variable]
- 1274 |   miniv8::V8Isolate *iso = (miniv8::V8Isolate *)isolate;
+ 1274 |   qjsv8::V8Isolate *iso = (qjsv8::V8Isolate *)isolate;
       |                      ^~~
 MiniV8Api.cpp: In member function ‘bool v8::Value::IsDataView() const’:
 MiniV8Api.cpp:1469:20: warning: unused variable ‘self’ [-Wunused-variable]
- 1469 |   miniv8::V8Value *self =
+ 1469 |   qjsv8::V8Value *self =
       |                    ^~~~
 MiniV8Api.cpp: At global scope:
 MiniV8Api.cpp:1865:35: error: expected ‘)’ before ‘*’ token
@@ -115,7 +115,7 @@ MiniV8Api.cpp:1865:36: error: expected initializer before ‘*’ token
       |                                    ^
 MiniV8Api.cpp: In static member function ‘static v8::Local<v8::External> v8::External::New(v8::Isolate*, void*)’:
 MiniV8Api.cpp:2291:22: warning: unused variable ‘isolate’ [-Wunused-variable]
- 2291 |   miniv8::V8Isolate *isolate = (miniv8::V8Isolate *)v8isolate;
+ 2291 |   qjsv8::V8Isolate *isolate = (qjsv8::V8Isolate *)v8isolate;
       |                      ^~~~~~~
 MiniV8Api.cpp: At global scope:
 MiniV8Api.cpp:2466:17: error: expected ‘)’ before ‘*’ token
@@ -134,24 +134,24 @@ MiniV8Api.cpp:2466:18: error: expected initializer before ‘*’ token
       |                  ^
 MiniV8Api.cpp: In member function ‘void v8::Template::Set(v8::Local<v8::Name>, v8::Local<v8::Data>, v8::PropertyAttribute)’:
 MiniV8Api.cpp:2607:24: warning: unused variable ‘ctx’ [-Wunused-variable]
- 2607 |     miniv8::V8Context *ctx =
+ 2607 |     qjsv8::V8Context *ctx =
       |                        ^~~
 MiniV8Api.cpp: In member function ‘v8::MaybeLocal<v8::Function> v8::FunctionTemplate::GetFunction(v8::Local<v8::Context>)’:
-MiniV8Api.cpp:2704:67: error: no matching function for call to ‘miniv8::V8Function::V8Function(miniv8::V8Context*&, int (miniv8::V8FunctionTemplate::*)(const v8::FunctionCallbackInfo<v8::Value>&), miniv8::V8FunctionTemplate*&)’
- 2704 |       ctx, &miniv8::V8FunctionTemplate::functionTemplateCall, self);
+MiniV8Api.cpp:2704:67: error: no matching function for call to ‘qjsv8::V8Function::V8Function(qjsv8::V8Context*&, int (qjsv8::V8FunctionTemplate::*)(const v8::FunctionCallbackInfo<v8::Value>&), qjsv8::V8FunctionTemplate*&)’
+ 2704 |       ctx, &qjsv8::V8FunctionTemplate::functionTemplateCall, self);
       |                                                                   ^
 In file included from MiniV8Api.cpp:1:
-MiniV8Api.h:347:5: note: candidate: ‘miniv8::V8Function::V8Function(miniv8::V8Context*, v8::FunctionCallback, void*)’
+MiniV8Api.h:347:5: note: candidate: ‘qjsv8::V8Function::V8Function(qjsv8::V8Context*, v8::FunctionCallback, void*)’
   347 |     V8Function(V8Context* ctx, v8::FunctionCallback callback, void* data)
       |     ^~~~~~~~~~
-MiniV8Api.h:347:53: note:   no known conversion for argument 2 from ‘int (miniv8::V8FunctionTemplate::*)(const v8::FunctionCallbackInfo<v8::Value>&)’ to ‘v8::FunctionCallback’ {aka ‘void (*)(const v8::FunctionCallbackInfo<v8::Value>&)’}
+MiniV8Api.h:347:53: note:   no known conversion for argument 2 from ‘int (qjsv8::V8FunctionTemplate::*)(const v8::FunctionCallbackInfo<v8::Value>&)’ to ‘v8::FunctionCallback’ {aka ‘void (*)(const v8::FunctionCallbackInfo<v8::Value>&)’}
   347 |     V8Function(V8Context* ctx, v8::FunctionCallback callback, void* data)
       |                                ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
-MiniV8Api.h:345:7: note: candidate: ‘miniv8::V8Function::V8Function(const miniv8::V8Function&)’
+MiniV8Api.h:345:7: note: candidate: ‘qjsv8::V8Function::V8Function(const qjsv8::V8Function&)’
   345 | class V8Function : public V8Object {
       |       ^~~~~~~~~~
 MiniV8Api.h:345:7: note:   candidate expects 1 argument, 3 provided
-MiniV8Api.h:345:7: note: candidate: ‘miniv8::V8Function::V8Function(miniv8::V8Function&&)’
+MiniV8Api.h:345:7: note: candidate: ‘qjsv8::V8Function::V8Function(qjsv8::V8Function&&)’
 MiniV8Api.h:345:7: note:   candidate expects 1 argument, 3 provided
 MiniV8Api.cpp: At global scope:
 MiniV8Api.cpp:2804:6: error: variable or field ‘SetAccessCheckCallback’ declared void

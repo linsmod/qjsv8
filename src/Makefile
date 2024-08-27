@@ -132,6 +132,9 @@ else
 LDEXPORT=-rdynamic
 endif
 
+CXXFLAGS=$(CFLAGS)
+
+
 PROGS=qjs$(EXE) qjsc$(EXE) run-test262
 ifneq ($(CROSS_PREFIX),)
 QJSC_CC=gcc
@@ -171,6 +174,7 @@ QJS_LIB_OBJS=$(OBJDIR)/quickjs.o $(OBJDIR)/libregexp.o $(OBJDIR)/libunicode.o $(
 
 
 QJS_OBJS=$(OBJDIR)/qjs.o $(OBJDIR)/repl.o $(QJS_LIB_OBJS)
+QJSV8_LIB_OBJS=$(OBJDIR)/qjsv8.o $(OBJDIR)/qjsv8-impl.o $(QJS_LIB_OBJS)
 ifdef CONFIG_BIGNUM
 QJS_LIB_OBJS+=$(OBJDIR)/libbf.o 
 QJS_OBJS+=$(OBJDIR)/qjscalc.o
@@ -183,10 +187,6 @@ LIBS+=-ldl -lpthread
 endif
 LIBS+=$(EXTRA_LIBS)
 
-QJSV8_LIB_OBJS=$(QJS_LIB_OBJS)
-QJSV8_LIB_OBJS+=$(OBJDIR)/qjsv8.o 
-QJSV8_LIB_OBJS+=$(OBJDIR)/qjsv8-impl.o 
-
 $(OBJDIR):
 	mkdir -p $(OBJDIR) $(OBJDIR)/examples $(OBJDIR)/tests
 
@@ -195,6 +195,12 @@ qjs$(EXE): $(QJS_OBJS)
 
 qjs-debug$(EXE): $(patsubst %.o, %.debug.o, $(QJS_OBJS))
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+qjsv8-shell$(EXE): $(OBJDIR)/qjsv8-shell.o $(QJSV8_LIB_OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS) -lstdc++
+
+qjsv8-shelld$(EXE): $(OBJDIR)/qjsv8-shell.debug.o $(patsubst %.o, %.debug.o, $(QJSV8_LIB_OBJS))
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS) -lstdc++	
 
 qjsc$(EXE): $(OBJDIR)/qjsc.o $(QJS_LIB_OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
@@ -276,9 +282,6 @@ run-test262-32: $(patsubst %.o, %.m32.o, $(OBJDIR)/run-test262.o $(QJS_LIB_OBJS)
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS_OPT) -c -o $@ $<
 
-$(OBJDIR)/%.o: %.cpp | $(OBJDIR)
-	$(CC) $(CFLAGS_OPT) -std=c++11 -c -o $@ $<	
-
 $(OBJDIR)/%.host.o: %.c | $(OBJDIR)
 	$(HOST_CC) $(CFLAGS_OPT) -c -o $@ $<
 
@@ -287,9 +290,6 @@ $(OBJDIR)/%.pic.o: %.c | $(OBJDIR)
 
 $(OBJDIR)/%.nolto.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS_NOLTO) -c -o $@ $<
-
-$(OBJDIR)/%.nolto.o: %.cpp | $(OBJDIR)
-	$(CC) $(CFLAGS_NOLTO) -c -o $@ $<	
 
 $(OBJDIR)/%.m32.o: %.c | $(OBJDIR)
 	$(CC) -m32 $(CFLAGS_OPT) -c -o $@ $<
@@ -302,6 +302,32 @@ $(OBJDIR)/%.debug.o: %.c | $(OBJDIR)
 
 $(OBJDIR)/%.check.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -DCONFIG_CHECK_JSVALUE -c -o $@ $<
+
+# cc files	
+
+$(OBJDIR)/%.o: %.cc | $(OBJDIR)
+	$(CC) $(CFLAGS_OPT) -c -o $@ $<
+
+$(OBJDIR)/%.host.o: %.cc | $(OBJDIR)
+	$(HOST_CC) $(CFLAGS_OPT) -c -o $@ $<
+
+$(OBJDIR)/%.pic.o: %.cc | $(OBJDIR)
+	$(CC) $(CFLAGS_OPT) -fPIC -DJS_SHARED_LIBRARY -c -o $@ $<
+
+$(OBJDIR)/%.nolto.o: %.cc | $(OBJDIR)
+	$(CC) $(CFLAGS_NOLTO) -c -o $@ $<
+
+$(OBJDIR)/%.m32.o: %.cc | $(OBJDIR)
+	$(CC) -m32 $(CFLAGS_OPT) -c -o $@ $<
+
+$(OBJDIR)/%.m32s.o: %.cc | $(OBJDIR)
+	$(CC) -m32 $(CFLAGS_SMALL) -c -o $@ $<
+
+$(OBJDIR)/%.debug.o: %.cc | $(OBJDIR)
+	$(CC) $(CFLAGS_DEBUG) -c -o $@ $<
+
+$(OBJDIR)/%.check.o: %.cc | $(OBJDIR)
+	$(CC) $(CFLAGS) -DCONFIG_CHECK_JSVALUE -c -o $@ $<	
 
 regexp_test: libregexp.c libunicode.c cutils.c
 	$(CC) $(LDFLAGS) $(CFLAGS) -DTEST -o $@ libregexp.c libunicode.c cutils.c $(LIBS)

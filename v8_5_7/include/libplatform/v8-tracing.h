@@ -10,8 +10,8 @@
 #include <unordered_set>
 #include <vector>
 
-#include "libplatform/libplatform-export.h"
-#include "v8-platform.h"  // NOLINT(build/include)
+#include "libplatform-export.h"
+#include "../v8-platform.h"  // NOLINT(build/include)
 
 namespace v8 {
 
